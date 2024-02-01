@@ -1,0 +1,41 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+	<img class="mw-100" src="{{ asset('asset/images/logo.png')}}" alt="Logo la Montacutaine">	
+    <div class="modal d-block " >
+            <div class="modal-dialog modal-dialog-centered container">
+                <div class="modal-content text-body bg-info">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-body" id="ModalLogin">Connexion</h1>
+                    </div>
+                    <div class="modal-body">
+
+                            <form class="text-center" id="loginForm" action="{{ path('app_back_login') }}" method="post">
+                                <div class="mb-2">
+                                    <label class="col-3"for="username">Email :</label>
+                                    <input type="text" id="username" name="_username" value="{{ last_username }}">
+                                </div>
+                                <div>
+                                    <label class="col-3" for="password">Mot de passe :</label>
+                                    <input type="password" id="password" name="_password">
+                                </div>
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            </form>
+                                                        {% if error %}
+                            <div class="text-danger text-center mt-3">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary " form="loginForm" type="submit">Soumettre</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show"></div>
+{% endblock %}

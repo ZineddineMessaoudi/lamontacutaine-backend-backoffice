@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Categories
+{% endblock %}
+
+{% block body %}
+	<div class="container col-lg-6">
+		<div class="mt-4 d-flex justify-content-end">
+			<a href="{{ path("back_category_create") }}" class="btn btn-outline-primary">Créer une catégorie</a>
+		</div>
+		<div class="card my-5 text-center mx-auto">
+			<div class="card-header h3 bg-info">Liste des catégories
+			</div>
+			<div class="card-body bg-body">
+				<table class="table table-striped table-primary table-responsive">
+					<thead>
+						<tr>
+                     <th scope="col">ID de la categorie</th>
+							<th scope="col">Nom de la categorie</th>
+							<th scope="col">Editer/Supprimer</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for category in categories %}
+							<tr>
+                        <th># {{ category.id }}</th>
+								<td>{{ category.name }}</td>
+								<td>									
+									<a href="{{ path('back_category_update', { 'id': category.id }) }}" class="btn btn-outline-warning">
+										<i class="bi bi-pencil" aria-hidden="true"></i>
+									</a>									
+									<div class="btn-group dropdown">
+										<button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="bi bi-trash"></i>
+										</button>
+										<ul class="dropdown-menu text-center">
+											<li>
+												<button class="btn btn-outline-danger"data-bs-toggle="modal" data-bs-target="#DeleteConfirmModal{{category.id}}">Supprimer</button>
+											</li>	
+											<li>
+												<a class="dropdown-item" href="#">Annuler</a>
+											</li>
+										</ul>
+									</div>
+								</td>
+							</tr>
+							<div class="modal fade" id="DeleteConfirmModal{{category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{category.id}}" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5 text-dark" id="exampleModalLabel{{category.id}}">Supprimer la catégorie</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body text-dark">Attention, si vous supprimez cette catégorie elle disparaitra aussi des évènements liés  ! Etes vous sur de vouloir continuer ?</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+											<form method="post" action="{{ path("back_category_delete", { 'id': category.id }) }}">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete-category-' ~ category.id) }}">
+												<button type="submit" class="btn btn-outline-danger">Supprimer</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

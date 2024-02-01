@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil BO La Montacutaine
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="card my-5 text-center">
+			<div class="card-header h3 bg-info">Evènements à venir
+			</div>
+			<div class="card-body bg-body table-responsive">
+				<table class="table table-striped table-primary">
+					<thead>
+						<tr>
+							<th scope="col">Evènement</th>
+							<th scope="col">Début de l'évènement</th>
+							<th scope="col">Fin de l'évènement</th>
+							<th scope="col">Fin des inscriptions</th>
+							<th scope="col">Médias</th>
+							<th scope="col">Editer/Supprimer</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for event in events %}
+							<tr>
+								<th scope="row">{{ event.title }}</th>
+								<td>{{ event.GetstartDate()|date('d-M-y') }}</td>
+								<td>{{ event.GetendDate()|date('d-M-y') }}</td>
+								<td>{% if event.getInscriptionEndDate() %}{{ event.getInscriptionEndDate()|date('d-M-y') }}{% else %}Pas de date limite{% endif %}</td>
+								<td>
+									<a href="{{ path("back_media_event", {id:event.id}) }}" class="btn btn-outline-info">
+										<i class="bi bi-image" aria-hidden="true"></i>
+									</a>								
+								</td>
+								<td>
+									<a href="{{ path("back_event_update", {id:event.id}) }}" class="btn btn-outline-warning">
+										<i class="bi bi-pencil" aria-hidden="true"></i>
+									</a>
+									<div class="btn-group dropdown">
+										<button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="bi bi-trash"></i>
+										</button>
+										<ul class="dropdown-menu text-center">
+											<li>
+														<button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#DeleteConfirmModal{{event.id}}">Supprimer</button>
+											</li>
+											<li>
+												<a class="dropdown-item text-dark" href="#">Annuler</a>
+											</li>
+										</ul>
+									</div>
+								</td>
+							</tr>
+										<div class="modal fade" id="DeleteConfirmModal{{event.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{event.id}}" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h1 class="modal-title fs-5 text-dark" id="DeleteConfirmModal{{event.id}}">Supprimer l'évènement</h1>
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body text-dark">Attention, si vous supprimez cet évènement, tous les médias liés (photos, flyers et commentaires) seront supprimés ! Etes vous sur de vouloir continuer ?</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+														<form method="post" action="{{ path("back_event_delete", {id:event.id}) }}">
+															<input type="hidden" name="_token" value="{{ csrf_token('delete-event') }}">
+															<button type="submit" class="btn btn-outline-danger">Supprimer</button>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="card my-5 text-center">
+			<div class="card-header h3 bg-info">Derniers commentaires</div>
+			<div class="card-body bg-body table-responsive-md">
+				<table class="table table-striped table-primary">
+					<thead>
+						<tr>
+							<th scope="col">Email</th>
+							<th scope="col">Evènement</th>
+							<th scope="col">Commentaire</th>
+							<th scope="col">Crée le</th>
+							<th scope="col">Supprimer</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for comment in comments %}
+							<tr>
+								<th scope="row">{{ comment.user.email }}</th>
+								<td>
+								{% if comment.event is not null %}
+								{{ comment.event.title }}
+								{% else %}
+								Pas d'évènement lié à ce commentaire.
+								{% endif %}
+								</td>
+								<td>{{ comment.body }}</td>
+								<td class="col-2">{{ comment.getCreatedAt()|date('d-M-y') }}</td>
+								<td>
+									<div class="btn-group dropdown">
+										<button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="bi bi-trash"></i>
+										</button>
+										<ul class="dropdown-menu">
+										<form method="POST" action="{{ path('back_comment_delete', { 'id': comment.id }) }}">
+											<button class="dropdown-item text-danger">Supprimer</button>
+											<input type="hidden" name="_token" value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+										</form>
+											<li>
+												<a class="dropdown-item" href="#">Annuler</a>
+											</li>
+										</ul>
+									</div>								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="card my-5 text-center">
+			<div class="card-header h3 bg-info">Cotisations non reglées</div>
+			<div class="card-body bg-body table-responsive">
+				<table class="table table-striped table-primary">
+					<thead>
+						<tr>
+							<th scope="col">Date de fin d'adhésion</th>
+							<th scope="col">Prénom</th>
+							<th scope="col">Nom</th>
+							<th scope="col">Email</th>
+							<th scope="col">Editer</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for member in members %}
+							<tr>
+								<th>{{ member.getMembershipExpiration()|date('d-M-y') }}</th>
+								<td scope="row">{{ member.user.firstname }}</td>
+								<td>{{ member.user.lastname }}</td>
+								<td>{{ member.user.email }}</td>
+								<td>
+									<a href="{{ path("back_member_update", {id:member.id}) }}" class="btn btn-outline-warning">
+										<i class="bi bi-pencil" aria-hidden="true"></i>
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

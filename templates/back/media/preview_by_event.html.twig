@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photos par évènement{% endblock %}
+
+{% block body %}
+<div class="container text-center mt-5">
+    <div class="d-flex justify-content-between">
+    <a href="{{ path("back_media_event_list", {id:event.id})}}" class="btn  btn-outline-info">Afficher les médias en liste</a>
+    <a href="{{ path("back_event_list") }}" class="btn  btn-outline-secondary">Retour à la liste</a>
+    </div>
+    <h2 class="text-center my-3">{{event.title}} {{event.startDate|date('Y')}}</h2>
+    <div class="bg-secondary row mb-3 align-items-center rounded">
+        <h4 class="card-header text-center py-3 mb-2">Flyers</h4>
+        {% if flyers %}
+            {% for flyer in flyers %}
+                {% if flyer.url starts with 'medias\\flyers\\mobile_' %}
+                <div class="mx-auto col-md-3 col-xs-6 mb-3 h5">Format Portrait
+                    <img class="img-thumbnail" src="\{{flyer.url}}" alt="{{flyer.title}}">
+                    <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    <ul class="dropdown-menu text-center">
+                        <li>
+                            <a class="dropdown-item text-dark" href="">Annuler</a>
+                        </li>
+                        <li>
+                            <form method="post" action="{{ path("back_media_delete", {id:flyer.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-media-' ~ flyer.id) }}">
+                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                {% else %}
+                <div class="mx-auto col-md-7 col-xs-6 mb-3 h5">Format Paysage
+                    <img class="img-thumbnail " src="\{{flyer.url}}" alt="{{flyer.title}}">
+                    <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    <ul class="dropdown-menu text-center">
+                        <li>
+                            <a class="dropdown-item text-dark" href="">Annuler</a>
+                        </li>
+                        <li>
+                            <form method="post" action="{{ path("back_media_delete", {id:flyer.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-media-' ~ flyer.id) }}">
+                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+                {% endif %}
+            {% endfor %}
+                <div class="mx-auto pb-3">
+                    <a href="{{ path("back_media_create", {type:"flyerl", id:event.id}) }}" class="d-inline btn btn-outline-info" type="button">
+                        <i class="bi bi-file-earmark-plus"> Flyer paysage</i>
+                    </a>
+                    <a href="{{ path("back_media_create", {type:"flyerp", id:event.id}) }}" class="d-inline btn btn-outline-info" type="button">
+                        <i class="bi bi-file-earmark-plus"> Flyer portrait</i>
+                    </a>
+                </div>
+        {% else %}
+                <div class="mx-auto col-md-7 col-xs-6 mb-3 h5"><h5>Format Paysage</h5>
+                    <img class="img-thumbnail"  src="https://placehold.co/700x400" alt="Ajouter un flyer">
+                    <a href="{{ path("back_media_create", {type:"flyerl", id:event.id}) }}" class="btn btn-outline-info mt-3" type="button">
+                        <i class="bi bi-file-earmark-plus"> Flyer paysage</i>
+                    </a>
+                </div>
+                <div class="mx-auto col-md-3 col-xs-6 mb-3 h5"><h5>Format Portrait</h5>
+                    <img class="img-thumbnail" src="https://placehold.co/250x400" alt="Ajouter un flyer">
+                    <a href="{{ path("back_media_create", {type:"flyerp", id:event.id}) }}" class="btn btn-outline-info mt-3" type="button">
+                        <i class="bi bi-file-earmark-plus"> Flyer portrait</i>
+                    </a>
+                </div>
+        {% endif %}
+    </div>
+
+    <div class="bg-secondary row mb-3 align-items-center rounded">
+        <h4 class="card-header text-center py-3">Images d'illustration</h4>
+        <div class="row align-items-center">
+        {% if covers %}
+            {% for cover in covers %}
+                <div class="mx-auto col-lg-3 col-md-4 col-sm-5 col-xs-6 mb-3"><h5>Couverture</h5>
+                    <img class="img-thumbnail" src="\{{cover.url}}" alt="{{cover.title}}">
+                        <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <ul class="dropdown-menu text-center">
+                            <li>
+                                <a class="dropdown-item text-dark" href="">Annuler</a>
+                            </li>
+                            <li>
+                                <form method="post" action="{{ path("back_media_delete", {id:cover.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-media-' ~ cover.id) }}">
+                                    <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                </form>
+                            </li>
+                        </ul>
+                </div>
+            {% endfor %}
+        {% else %}
+                <div class="mx-auto col-lg-3 col-md-4 col-sm-5 col-xs-6 m-3"><h5>Couverture</h5>
+                    <img class="img-thumbnail" src="https://placehold.co/400x300" alt="Ajouter une couverture">
+                    <a href="{{ path("back_media_create", {type:"cover", id:event.id}) }}" class="btn btn-outline-info mt-3" type="button">
+                        <i class="bi bi-file-earmark-plus"> Ajouter couverture</i>
+                    </a>
+                </div>
+        {% endif %}
+
+        {% if previews %}
+            {% for preview in previews %}
+            <div class="mx-auto col-lg-3 col-md-4 col-sm-5 col-xs-6 mb-3"><h5>Preview {{preview.previewOrder}}</h5>
+                <img class="img-thumbnail" src="\{{preview.url}}" alt="{{preview.title}}">
+                    <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    <ul class="dropdown-menu text-center">
+                        <li>
+                            <a class="dropdown-item text-dark" href="">Annuler</a>
+                        </li>
+                        <li>
+                            <form method="post" action="{{ path("back_media_delete", {id:preview.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-media-' ~ preview.id) }}">
+                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                            </form>
+                        </li>
+                    </ul>
+            </div>
+            {% endfor %}
+            <div class="mx-auto pb-3">
+                <a href="{{ path("back_media_create", {type:"pone", id:event.id}) }}" class="btn btn-outline-info" type="button">
+                    <i class="bi bi-file-earmark-plus"> Preview 1</i>
+                </a>
+                <a href="{{ path("back_media_create", {type:"ptwo", id:event.id}) }}" class="btn btn-outline-info" type="button">
+                    <i class="bi bi-file-earmark-plus"> Preview 2</i>
+                </a>
+                <a href="{{ path("back_media_create", {type:"pthree", id:event.id}) }}" class="btn btn-outline-info" type="button">
+                    <i class="bi bi-file-earmark-plus"> Preview 3</i>
+                </a>
+            </div>
+        {% else %}
+            <div class="mx-auto col-lg-3 col-md-4 col-sm-5 col-xs-6 mb-3"><h5>Preview 1</h5>
+                <img class="img-thumbnail" src="https://placehold.co/400x300" alt="Ajouter une preview">
+                <a href="{{ path("back_media_create", {type:"pone", id:event.id}) }}" class="btn btn-outline-info mt-3" type="button">
+                    <i class="bi bi-file-earmark-plus"> Ajouter la preview 1</i>
+                </a>
+            </div>
+            <div class="mx-auto col-lg-3 col-md-4 col-sm-5 col-xs-6 mb-3"><h5>Preview 2</h5>
+                <img class="img-thumbnail" src="https://placehold.co/400x300" alt="Ajouter une preview">
+                <a href="{{ path("back_media_create", {type:"ptwo", id:event.id}) }}" class="btn btn-outline-info mt-3" type="button">
+                    <i class="bi bi-file-earmark-plus"> Ajouter la preview 2</i>
+                </a>
+            </div>
+            <div class="mx-auto col-lg-3 col-md-4 col-sm-5 col-xs-6 mb-3"><h5>Preview 3</h5>
+                <img class="img-thumbnail" src="https://placehold.co/400x300" alt="Ajouter une preview">
+                <a href="{{ path("back_media_create", {type:"pthree", id:event.id}) }}" class="btn btn-outline-info mt-3" type="button">
+                    <i class="bi bi-file-earmark-plus"> Ajouter la preview 3</i>
+                </a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+    <div class="bg-secondary row mb-3 align-items-center rounded">
+        <h4 class="d-block card-header text-center py-3">Photos de l'évènement</h4>
+                    {% for photo in photos %}
+        <div class="mx-auto col-lg-3 col-md-4 col-sm-5 col-xs-6 mb-3">
+            <img class="img-thumbnail" src="\{{photo.url}}" alt="{{photo.title}}">
+                <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-trash"></i>
+                </button>
+                <ul class="dropdown-menu text-center">
+                    <li>
+                        <a class="dropdown-item text-dark" href="">Annuler</a>
+                    </li>
+                    <li>
+                        <form method="post" action="{{ path("back_media_delete", {id:photo.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-media-' ~ photo.id) }}">
+                            <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                        </form>
+                    </li>
+                </ul>
+        </div>
+                    {% endfor %}
+        <a href="{{ path("back_media_massupload") }}" class="btn btn-outline-info my-3">
+            <i class="bi bi-images" aria-hidden="true"> Ajouter des photos</i>
+        </a>
+
+    </div>
+</div>
+{% endblock %}

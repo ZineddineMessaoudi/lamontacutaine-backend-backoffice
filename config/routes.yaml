@@ -1,0 +1,11 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+app_back_logout:
+  path: /deconnexion
+  methods: GET
+
+api_login_check:
+    path: /api/v1/checklogin
+    methods: POST

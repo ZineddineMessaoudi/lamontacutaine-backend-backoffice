@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evenement{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5 col-lg-6">
+      <div class="d-flex justify-content-end">
+            <a href="{{  path("back_event_list") }}" class="btn  btn-outline-secondary">Retour à la liste</a>
+      </div>
+    	<h2 class="mt-3">Créer/Editer un Evènement</h2>
+      {{ form_start(form, {"attr": {"novalidate": "novalidate"}}) }}
+      <div class="mt-3">
+            {{ form_label(form.title) }} {{ form_widget(form.title) }}
+            <div class="form-error">
+                  {{ form_errors(form.title) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            {{ form_label(form.description) }} {{ form_widget(form.description) }}
+            <div class="form-error">
+                  {{ form_errors(form.description) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            {{ form_label(form.info_highlight) }} {{ form_widget(form.info_highlight) }}
+            <div class="form-error">
+                  {{ form_errors(form.info_highlight) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            <i class="fa fa-calendar"></i> {{ form_label(form.start_date) }} {{ form_widget(form.start_date) }}
+            <div class="form-error">
+                  {{ form_errors(form.start_date) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            <i class="fa fa-calendar"></i> {{ form_label(form.end_date) }} {{ form_widget(form.end_date) }}
+            <div class="form-error">
+                  {{ form_errors(form.end_date) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            <i class="fa fa-calendar"></i> {{ form_label(form.inscription_end_date) }} {{ form_widget(form.inscription_end_date) }}
+            <div class="form-error">
+                  {{ form_errors(form.inscription_end_date) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            {{ form_label(form.maximum_capacity) }} {{ form_widget(form.maximum_capacity) }}
+            <div class="form-error">
+                  {{ form_errors(form.maximum_capacity) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            {{ form_label(form.event_location) }} {{ form_widget(form.event_location) }}
+            <div class="form-error">
+                  {{ form_errors(form.event_location) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            {{ form_label(form.hello_asso_url) }} {{ form_widget(form.hello_asso_url) }}
+            <div class="form-error">
+                  {{ form_errors(form.hello_asso_url) }}
+            </div>
+      </div>
+      <div class="mt-3">
+            {{ form_label(form.price) }} {{ form_widget(form.price) }}
+            <div class="form-error">
+                  {{ form_errors(form.price) }}
+            </div>
+      </div>
+      <div class="my-4">
+            {{ form_label(form.open_to_trader) }} {{ form_widget(form.open_to_trader) }}
+            <div class="form-error">
+                  {{ form_errors(form.open_to_trader) }}
+            </div>
+      </div>
+      <div class="mb-2">
+            {{ form_label(form.category) }} {{ form_widget(form.category) }}
+            <div class="form-error">
+                  {{ form_errors(form.category) }}
+            </div>
+      </div>
+</div>
+      <div class="text-center my-3">
+            <button class="btn btn-outline-primary">Valider</button>
+      </div>
+      {{ form_end(form) }}
+{% endblock %}
