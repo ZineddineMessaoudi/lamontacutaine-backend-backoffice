@@ -14,5 +14,5 @@ If you wish to install this project on your machine, you will need **PHP**, **Co
 - Run the command `composer install`
 - If you wish to use the **API** `php bin/console lexik:jwt:generate-keypair`
 - Create the database `php bin/console d:d:c`
-- Run the migration to create the tables php bin/console d:m:m
-  Create an administrator account (via fixtures or directly in the database with the ROLE_ADMIN) or modify the Symfony security file to remove access restrictions.
+- Run the migration to create the tables `php bin/console d:m:m`
+  Create an administrator account (via fixtures or directly in the database with the **ROLE_ADMIN**) or modify the Symfony security.yaml file to remove access restrictions.
