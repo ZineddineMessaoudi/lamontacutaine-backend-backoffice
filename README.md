@@ -1,6 +1,6 @@
 # La Montacutaine
 
-This repository contains the code for the v1 of the backend of the website [La Montacutaine](https://lamontacutaine.fr)
+This repository contains the code for the v1 of [La Montacutaine](https://lamontacutaine.fr) backend
 , as well as the v1 of its back office.
 
 It was developed in collaboration with another junior developer, from scratch, over the course of one month.
